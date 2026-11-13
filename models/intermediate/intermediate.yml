@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: int_contract_terms
+    description: >
+      Customer contract rows (internal test organisations removed) with placeholder dates nulled and flagged,
+      the renewal count recovered from the rolled-forward term start, the end of paid coverage per row and
+      the current-status flags. This is the row-level cleaning the subscription-lifecycle project performs
+      before building customer histories.
+    columns:
+      - name: contract_row_id
+        tests: [unique, not_null]
+      - name: org_key
+        tests: [not_null]
+      - name: renewals_so_far
+        description: round((term_start_date - contract_date) / 365); null when the term starts more than two weeks before the contract date.
+      - name: coverage_end_date
+        description: The term end, or the earlier return date for a deleted row whose device went back mid-term.
+      - name: slot_start_source
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["contract_date", "term_start_date", "none"]
+  - name: int_device_day_anomaly
+    description: >
+      One row per device-day with the moving-while-silent counts: 23-25 Sep 2026 from the three-day summary
+      (with the moving-report denominator), 28 Sep 2026 from the report-level anomaly file (flagged reports only).
+    columns:
+      - name: device_key
+        tests: [not_null]
+      - name: report_date
+        tests: [not_null]
+      - name: source_table
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["three_day_summary", "anomaly_reports"]
