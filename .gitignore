@@ -1,0 +1,28 @@
+# dbt artefacts and the local warehouse
+target/
+dbt_packages/
+logs/
+.user.yml
+data/*.duckdb
+data/*.duckdb.wal
+
+# raw exports and keys never enter the repository
+data/raw/
+secrets/
+*.key
+deid_key*
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# editors / os
+.DS_Store
+.vscode/
+.idea/

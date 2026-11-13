@@ -1,0 +1,35 @@
+name: telematics_marts
+version: "0.1.0"
+config-version: 2
+profile: telematics_marts
+
+model-paths: ["models"]
+snapshot-paths: ["snapshots"]
+test-paths: ["dbt_tests"]
+macro-paths: ["macros"]
+analysis-paths: ["analyses"]
+seed-paths: ["seeds"]
+
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  # the foundation tables were exported from the device-management system and the CRM on this date
+  snapshot_date: "2026-09-28"
+  # which CRM export the subscription-slot snapshot reads; see snapshots/README
+  contract_export: "2026-09-28"
+
+models:
+  telematics_marts:
+    +materialized: view
+    staging:
+      +schema: staging
+    intermediate:
+      +schema: intermediate
+    marts:
+      +materialized: table
+      +schema: marts
+
+snapshots:
+  telematics_marts:
+    +target_schema: snapshots
