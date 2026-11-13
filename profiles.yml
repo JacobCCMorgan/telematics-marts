@@ -1,5 +1,8 @@
 # Local profile: a file-backed DuckDB database under data/. Run dbt with
 #   DBT_PROFILES_DIR=. dbt build
+config:
+  send_anonymous_usage_stats: false
+
 telematics_marts:
   target: dev
   outputs:

@@ -1,0 +1,35 @@
+version: 2
+
+sources:
+  - name: foundation
+    description: >
+      De-identified exports of one ELD / fleet-telematics provider's operational systems, published by the
+      telematics-data-foundation repository and copied unchanged into data/input (see data/input/SOURCE.md).
+      Read directly from the Parquet files by the DuckDB adapter.
+    meta:
+      external_location: "data/input/{name}.parquet"
+    tables:
+      - name: dim_device
+        description: One row per ELD unit in the device-management registry, snapshot 2026-09-28.
+      - name: dim_sim
+        description: One row per SIM (same keys as dim_device).
+      - name: dim_vehicle
+        description: One row per vehicle in the driver-app back office.
+      - name: dim_driver_account
+        description: One row per driver login account in the driver-app back office.
+      - name: dim_org
+        description: One row per customer organisation (CRM list, app company master and contract rows merged).
+      - name: fact_contract
+        description: One row per vehicle subscription slot in the CRM contract list as of 2026-09-28.
+      - name: fact_anomaly_device_3day
+        description: One row per device flagged by the field-anomaly rules on 23-25 Sep 2026, with per-day counts.
+      - name: fact_field_anomaly
+        description: One row per flagged telemetry report on 2026-09-28.
+  - name: contract_history
+    description: >
+      An earlier export of the same CRM contract list (active slots as of 2024-01-05), published by the
+      eld-subscription-lifecycle repository. Used only by the subscription-slot snapshot.
+    meta:
+      external_location: "data/input/contracts_snapshot_2024-01-05.parquet"
+    tables:
+      - name: contracts_snapshot_2024_01_05

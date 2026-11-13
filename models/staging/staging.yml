@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: stg_foundation__devices
+    description: ELD units from the device registry, one row per unit; hardware generation normalised to A/B/C.
+    columns:
+      - name: device_key
+        tests: [unique, not_null]
+      - name: hw_generation
+        tests:
+          - accepted_values:
+              values: ["A", "B", "C"]
+  - name: stg_foundation__sims
+    columns:
+      - name: device_key
+        tests: [unique, not_null]
+  - name: stg_foundation__vehicles
+    description: Vehicle registrations from the driver-app back office; a VIN re-registered after a device swap or a change of customer has more than one row.
+    columns:
+      - name: registration_id
+        tests: [unique, not_null]
+      - name: vin_key
+        tests: [not_null]
+  - name: stg_foundation__driver_accounts
+    description: Driver login accounts as synced from the driver-app back office; four accounts appear twice (the same login synced on two dates), so uniqueness is enforced in the mart, not here.
+    columns:
+      - name: account_key
+        tests: [not_null]
+  - name: stg_foundation__organizations
+    columns:
+      - name: org_key
+        tests: [unique, not_null]
+  - name: stg_foundation__contracts
+    description: CRM contract list as of 2026-09-28, one row per vehicle subscription slot; dates cast, eld_type lower-cased.
+    columns:
+      - name: contract_row_id
+        tests: [unique, not_null]
+      - name: status
+        tests:
+          - accepted_values:
+              values: ["active", "inactive", "deleted", "unpaid", "suspended"]
+  - name: stg_foundation__contracts_2024
+    description: The same CRM list as of 2024-01-05 (active slots only).
+  - name: stg_foundation__anomaly_device_3day
+    columns:
+      - name: device_key
+        tests: [unique, not_null]
+  - name: stg_foundation__anomaly_reports
+    columns:
+      - name: device_key
+        tests: [not_null]
+      - name: report_date
+        tests: [not_null]
