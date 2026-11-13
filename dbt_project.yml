@@ -3,6 +3,10 @@ version: "0.1.0"
 config-version: 2
 profile: telematics_marts
 
+flags:
+  send_anonymous_usage_stats: false
+  require_generic_test_arguments_property: true
+
 model-paths: ["models"]
 snapshot-paths: ["snapshots"]
 test-paths: ["dbt_tests"]

@@ -9,7 +9,8 @@ models:
       - name: hw_generation
         tests:
           - accepted_values:
-              values: ["A", "B", "C"]
+              arguments:
+                values: ["A", "B", "C"]
   - name: stg_foundation__sims
     columns:
       - name: device_key
@@ -38,7 +39,8 @@ models:
       - name: status
         tests:
           - accepted_values:
-              values: ["active", "inactive", "deleted", "unpaid", "suspended"]
+              arguments:
+                values: ["active", "inactive", "deleted", "unpaid", "suspended"]
   - name: stg_foundation__contracts_2024
     description: The same CRM list as of 2024-01-05 (active slots only).
   - name: stg_foundation__anomaly_device_3day
