@@ -61,6 +61,7 @@ derived as (
         *,
         datediff('day', contract_date, term_start_date)                                 as term_gap_days,
         case
+            when datediff('day', contract_date, term_start_date) is null then null
             when datediff('day', contract_date, term_start_date) < -14 then null
             else greatest(round(datediff('day', contract_date, term_start_date) / {{ term_days }}.0), 0)
         end                                                                             as renewals_so_far,
