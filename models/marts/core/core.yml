@@ -1,0 +1,92 @@
+version: 2
+
+models:
+  - name: dim_device
+    description: One row per ELD unit with registry state, SIM, current vehicle registration, organisation and current subscription row.
+    columns:
+      - name: device_key
+        tests: [unique, not_null]
+      - name: hw_generation
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["A", "B", "C"]
+      - name: org_key
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_organization')
+                field: org_key
+  - name: dim_vehicle
+    description: One row per VIN (current registration).
+    columns:
+      - name: vin_key
+        tests: [unique, not_null]
+      - name: org_key
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_organization')
+                field: org_key
+  - name: dim_driver_account
+    columns:
+      - name: account_key
+        tests: [unique, not_null]
+      - name: org_key
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_organization')
+                field: org_key
+  - name: dim_organization
+    description: One row per organisation with subscription lifecycle metrics derived from the cleaned contract rows.
+    columns:
+      - name: org_key
+        tests: [unique, not_null]
+      - name: lifecycle_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["active", "in_grace_period", "lapsed", "no_dates", "never_contracted"]
+  - name: fct_contract_term
+    description: One row per vehicle subscription slot (2026-09-28 export), customer organisations only.
+    columns:
+      - name: contract_row_id
+        tests: [unique, not_null]
+      - name: org_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_organization')
+                field: org_key
+  - name: fct_device_day
+    description: One row per device-day of moving-while-silent telemetry; the input of the ECM-disconnect project.
+    columns:
+      - name: device_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_device')
+                field: device_key
+      - name: source_table
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["three_day_summary", "anomaly_reports"]
+  - name: fct_device_anomaly_window
+    description: One row per device flagged on 23-25 Sep 2026 with the severity class, the count-based priority tier and the 28 Sep outcome.
+    columns:
+      - name: device_key
+        tests: [unique, not_null]
+      - name: severity_class
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["chronic", "intermittent", "transient"]
+      - name: priority_tier
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["P1", "P2", "P3", "P4"]

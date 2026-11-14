@@ -35,3 +35,18 @@ models:
           - accepted_values:
               arguments:
                 values: ["three_day_summary", "anomaly_reports"]
+  - name: int_vehicle_current_registration
+    description: One row per VIN, the registration that represents the vehicle today.
+    columns:
+      - name: vin_key
+        tests: [unique, not_null]
+  - name: int_device_current_vehicle
+    description: One row per device present in the vehicle master, the registration that holds the device today.
+    columns:
+      - name: device_key
+        tests: [unique, not_null]
+  - name: int_device_current_contract
+    description: One row per device present in the contract list, its current subscription row.
+    columns:
+      - name: device_key
+        tests: [unique, not_null]
