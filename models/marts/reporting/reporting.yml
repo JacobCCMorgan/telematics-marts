@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: rpt_fleet_snapshot
+    description: Headline fleet metrics at the 2026-09-28 snapshot, one row per metric, customer units and organisations only.
+    columns:
+      - name: metric
+        tests: [unique, not_null]
+      - name: value
+        tests: [not_null]
+  - name: rpt_online_rate_by_generation
+    columns:
+      - name: hw_generation
+        tests: [unique, not_null]
+  - name: rpt_device_priority_tiers
+    description: Field-visit tiers of the ECM-disconnect project from the anomaly-window fact.
+    columns:
+      - name: priority_tier
+        tests: [unique, not_null]
+  - name: rpt_subscription_slot_changes
+    description: Outcome of every slot active in the 2024 export by the 2026 export, from the type-2 snapshot.
+    columns:
+      - name: outcome
+        tests:
+          - unique
+          - accepted_values:
+              arguments:
+                values: ["renewed_same_device", "renewed_replacement_device", "expired_row_kept", "unchanged_still_active", "purged_from_crm", "term_dates_missing_in_2026", "term_start_moved_back", "other"]
