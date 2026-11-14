@@ -50,3 +50,8 @@ models:
     columns:
       - name: device_key
         tests: [unique, not_null]
+  - name: int_subscription_slot_export
+    description: One row per customer subscription slot (organisation x VIN) from the export selected by the contract_export variable; the snapshot's source.
+    columns:
+      - name: slot_key
+        tests: [unique, not_null]
