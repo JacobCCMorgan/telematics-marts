@@ -1,0 +1,213 @@
+{
+  "tables": {
+    "dim_device": 4970,
+    "dim_driver_account": 4600,
+    "dim_organization": 5675,
+    "dim_vehicle": 3492,
+    "fct_contract_term": 13753,
+    "fct_device_anomaly_window": 215,
+    "fct_device_day": 2254,
+    "rpt_device_priority_tiers": 4,
+    "rpt_fleet_snapshot": 12,
+    "rpt_online_rate_by_generation": 3,
+    "rpt_organizations_purged_after_2024": 1,
+    "rpt_subscription_slot_changes": 8,
+    "snap_subscription_slot": 19010
+  },
+  "fleet_snapshot": {
+    "backup_battery_at_most_20pct_units": {
+      "value": 85,
+      "denominator": 3456,
+      "share": 0.024595
+    },
+    "contract_terms_exactly_365_days": {
+      "value": 7997,
+      "denominator": 10779,
+      "share": 0.741906
+    },
+    "last_reported_low_battery_units": {
+      "value": 435,
+      "denominator": 3456,
+      "share": 0.125868
+    },
+    "never_read_vin_units": {
+      "value": 1382,
+      "denominator": 3456,
+      "share": 0.399884
+    },
+    "never_reported_units": {
+      "value": 1445,
+      "denominator": 4901,
+      "share": 0.294838
+    },
+    "no_valid_gps_units": {
+      "value": 206,
+      "denominator": 3456,
+      "share": 0.059606
+    },
+    "not_updated_over_30_days_units": {
+      "value": 514,
+      "denominator": 3456,
+      "share": 0.148727
+    },
+    "online_units": {
+      "value": 2123,
+      "denominator": 3456,
+      "share": 0.614294
+    },
+    "organizations_active": {
+      "value": 2022,
+      "denominator": 5308,
+      "share": 0.380934
+    },
+    "organizations_lapsed": {
+      "value": 2532,
+      "denominator": 5308,
+      "share": 0.477016
+    },
+    "registered_units": {
+      "value": 4901,
+      "denominator": null,
+      "share": null
+    },
+    "reporting_units": {
+      "value": 3456,
+      "denominator": null,
+      "share": null
+    }
+  },
+  "online_rate_by_generation": {
+    "A": {
+      "reporting_units": 471,
+      "online_rate": 0.460722
+    },
+    "B": {
+      "reporting_units": 1528,
+      "online_rate": 0.626963
+    },
+    "C": {
+      "reporting_units": 1457,
+      "online_rate": 0.650652
+    }
+  },
+  "anomaly_window": {
+    "flagged_customer_devices": 182,
+    "flagged_internal_test_devices": 33,
+    "silent_reports_3day_customer": 75897,
+    "observed_day4": 143,
+    "severe_day4": 26,
+    "classes": {
+      "chronic": {
+        "devices": 14,
+        "silent_3day": 40744,
+        "observed_day4": 13,
+        "severe_day4": 9
+      },
+      "intermittent": {
+        "devices": 128,
+        "silent_3day": 35144,
+        "observed_day4": 96,
+        "severe_day4": 12
+      },
+      "transient": {
+        "devices": 40,
+        "silent_3day": 9,
+        "observed_day4": 34,
+        "severe_day4": 5
+      }
+    },
+    "tiers": {
+      "P1": {
+        "devices": 27,
+        "severe_day4_share": 0.571429,
+        "share_of_day4_silent_reports": 0.81532
+      },
+      "P2": {
+        "devices": 18,
+        "severe_day4_share": 0.333333,
+        "share_of_day4_silent_reports": 0.115954
+      },
+      "P3": {
+        "devices": 19,
+        "severe_day4_share": 0.125,
+        "share_of_day4_silent_reports": 0.005671
+      },
+      "P4": {
+        "devices": 118,
+        "severe_day4_share": 0.076923,
+        "share_of_day4_silent_reports": 0.063055
+      }
+    }
+  },
+  "contract_terms": {
+    "customer_rows": 13753,
+    "flags": {
+      "flag_far_future_expiration": 6,
+      "flag_return_before_activation": 25,
+      "flag_negative_vehicle_limit": 125,
+      "flag_activation_after_snapshot": 5,
+      "flag_active_past_expiration": 26,
+      "flag_missing_dates": 2117,
+      "flag_term_end_before_start": 34
+    },
+    "organizations_by_lifecycle_status": {
+      "lapsed": 2532,
+      "active": 2022,
+      "no_dates": 526,
+      "never_contracted": 359,
+      "in_grace_period": 228
+    }
+  },
+  "subscription_slot_snapshot": {
+    "versions": {
+      "2024-01-05|deleted=False": 4959,
+      "2026-09-28|deleted=False": 13230,
+      "2026-09-28|deleted=True": 821
+    },
+    "slots_active_2024": 4959,
+    "outcomes_2024_to_2026": {
+      "renewed_replacement_device": {
+        "slots": 2209,
+        "share": 0.445453,
+        "organizations": 1643
+      },
+      "renewed_same_device": {
+        "slots": 941,
+        "share": 0.189756,
+        "organizations": 697
+      },
+      "expired_row_kept": {
+        "slots": 915,
+        "share": 0.184513,
+        "organizations": 687
+      },
+      "purged_from_crm": {
+        "slots": 821,
+        "share": 0.165558,
+        "organizations": 486
+      },
+      "term_dates_missing_in_2026": {
+        "slots": 38,
+        "share": 0.007663,
+        "organizations": 31
+      },
+      "term_start_moved_back": {
+        "slots": 30,
+        "share": 0.00605,
+        "organizations": 29
+      },
+      "other": {
+        "slots": 3,
+        "share": 0.000605,
+        "organizations": 3
+      },
+      "unchanged_still_active": {
+        "slots": 2,
+        "share": 0.000403,
+        "organizations": 2
+      }
+    },
+    "organizations_active_2024": 2968,
+    "organizations_purged": 183
+  }
+}
