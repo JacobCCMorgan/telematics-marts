@@ -6,8 +6,8 @@ looked like before is an older export. Two exports exist in this repository (5 J
 the snapshot is built by running them in date order:
 
 ```bash
-DBT_PROFILES_DIR=. dbt build --select +snap_subscription_slot --vars '{"contract_export": "2024-01-05"}'
-DBT_PROFILES_DIR=. dbt build --select +snap_subscription_slot --vars '{"contract_export": "2026-09-28"}'
+DBT_PROFILES_DIR=. dbt build --select +snap_subscription_slot --indirect-selection cautious --vars '{"contract_export": "2024-01-05"}'
+DBT_PROFILES_DIR=. dbt build --select +snap_subscription_slot --indirect-selection cautious --vars '{"contract_export": "2026-09-28"}'
 ```
 
 `scripts/build.sh` does this before `dbt build`. Running the snapshot again with the same export is a

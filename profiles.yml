@@ -5,5 +5,5 @@ telematics_marts:
   outputs:
     dev:
       type: duckdb
-      path: "data/marts.duckdb"
+      path: "data/warehouse.duckdb"   # not marts.duckdb: the file name is the catalog, and a catalog named like a schema is ambiguous in DuckDB
       threads: 4

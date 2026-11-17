@@ -26,3 +26,8 @@ models:
           - accepted_values:
               arguments:
                 values: ["renewed_same_device", "renewed_replacement_device", "expired_row_kept", "unchanged_still_active", "purged_from_crm", "term_dates_missing_in_2026", "term_start_moved_back", "other"]
+  - name: rpt_organizations_purged_after_2024
+    description: Organisations active in the 2024 export with no dated contract row left in 2026 (one row).
+    columns:
+      - name: organizations_purged
+        tests: [not_null]
