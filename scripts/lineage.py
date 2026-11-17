@@ -43,6 +43,11 @@ def main() -> None:
     for uid, n in m["exposures"].items():
         nodes[uid] = {**n, "resource_type": "exposure", "name": n["label"]}
 
+    # dbt lists nodes in the order it read the files, which follows the order the filesystem returns
+    # directory entries in and is not the same on every machine. Order by layer and name instead, so the
+    # graph is identical wherever it is built.
+    layer_rank = {key: i for i, (key, _) in enumerate(LAYERS)}
+    nodes = dict(sorted(nodes.items(), key=lambda kv: (layer_rank[layer_of(kv[1])], kv[1]["name"], kv[0])))
     ident = {uid: f"n{i}" for i, uid in enumerate(nodes)}
     lines = ["flowchart TB"]
     for key, title in LAYERS:
@@ -53,10 +58,11 @@ def main() -> None:
         for uid in members:
             lines.append(f'    {ident[uid]}["{nodes[uid]["name"]}"]')
         lines.append("  end")
-    for uid, n in nodes.items():
-        for dep in n.get("depends_on", {}).get("nodes", []):
-            if dep in ident:
-                lines.append(f"  {ident[dep]} --> {ident[uid]}")
+    order = {uid: i for i, uid in enumerate(nodes)}
+    edges = {(order[dep], order[uid]) for uid, n in nodes.items()
+             for dep in n.get("depends_on", {}).get("nodes", []) if dep in order}
+    for src, dst in sorted(edges, key=lambda e: (e[1], e[0])):
+        lines.append(f"  n{src} --> n{dst}")
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text("\n".join(lines) + "\n")
     print(f"wrote {OUT.relative_to(ROOT)}: {len(nodes)} nodes")
