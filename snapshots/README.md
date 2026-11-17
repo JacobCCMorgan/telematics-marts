@@ -10,9 +10,14 @@ DBT_PROFILES_DIR=. dbt build --select +snap_subscription_slot --indirect-selecti
 DBT_PROFILES_DIR=. dbt build --select +snap_subscription_slot --indirect-selection cautious --vars '{"contract_export": "2026-09-28"}'
 ```
 
-`scripts/build.sh` does this before `dbt build`. Running the snapshot again with the same export is a
+`scripts/build.sh` does this before `dbt build`. Running the snapshot again with the latest export is a
 no-op, so a plain `dbt build` afterwards (which runs the snapshot with the default `contract_export`) does
 not add rows.
+
+The order matters and the replay is not repeatable in place. Running the 2024 export against a snapshot
+that already holds 2026 closes the current versions as of 2024 and writes the 2024 rows again: 19,010 rows
+become 33,061, and `assert_snapshot_versions_do_not_overlap` fails. `scripts/build.sh` removes
+`data/warehouse.duckdb` before it starts, so every build replays both exports onto an empty snapshot.
 
 A slot present in the 2024 export and missing in 2026 was purged by the CRM; the snapshot records it as a
 deletion row (`dbt_is_deleted = 'True'`, valid from 2026-09-28). The reporting mart

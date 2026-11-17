@@ -106,8 +106,10 @@ DBT_PROFILES_DIR=. dbt build --select +snap_subscription_slot --indirect-selecti
 ```
 
 A project-level override of `snapshot_get_time()` makes "now" the export date, so deletion records are
-dated at the export that lost the slot rather than at the wall clock of the run. Rerunning an export is a
-no-op, so a plain `dbt build` afterwards adds nothing.
+dated at the export that lost the slot rather than at the wall clock of the run. Rerunning the latest
+export is a no-op, so a plain `dbt build` afterwards adds nothing. Replaying an older export onto a newer
+snapshot is not: dbt records it as a fresh change and the versions overlap (the snapshot tests fail on
+it). `scripts/build.sh` therefore removes the warehouse file and replays both exports every time.
 
 ## Reproduce
 
@@ -117,7 +119,7 @@ cd telematics-marts
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
-./scripts/build.sh                     # snapshots in export order, then dbt build (models + 72 tests)
+./scripts/build.sh                     # empty warehouse, snapshots in export order, dbt build (models + 72 tests)
 python scripts/export_marts.py         # data/marts/*.parquet + manifest.json
 python scripts/write_report.py         # reports/marts_report.md + summary.json
 pytest -q                              # 42 checks on the exported tables
