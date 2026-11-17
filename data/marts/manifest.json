@@ -1,0 +1,275 @@
+{
+  "dim_device": {
+    "schema": "marts",
+    "rows": 4970,
+    "columns": [
+      "device_key",
+      "is_internal_test",
+      "batch_label",
+      "hw_generation",
+      "model_code",
+      "fw_version",
+      "st_fw_version",
+      "ble_fw_version",
+      "never_reported",
+      "connect_status",
+      "last_mode",
+      "last_reported_low_battery",
+      "backup_battery_pct",
+      "car_battery_connected",
+      "gps_valid",
+      "mileage_source_sa",
+      "last_report_ts",
+      "last_updated_ts",
+      "days_since_last_update",
+      "engine_hours",
+      "engine_miles",
+      "registry_vin_key",
+      "registry_vin_is_placeholder",
+      "registry_vehicle_make",
+      "registry_vehicle_year",
+      "vehicle_vin_key",
+      "org_key",
+      "vehicle_make",
+      "vehicle_model_year",
+      "vehicle_status",
+      "current_contract_row_id",
+      "contract_eld_type",
+      "contract_is_current_generation",
+      "contract_status",
+      "contract_is_active_now",
+      "sim_service_status",
+      "quota_status",
+      "sim_remaining_data_mb",
+      "sim_remaining_days",
+      "sim_expiry_date"
+    ]
+  },
+  "dim_driver_account": {
+    "schema": "marts",
+    "rows": 4600,
+    "columns": [
+      "account_key",
+      "org_key",
+      "is_internal_test",
+      "license_state",
+      "license_shared_by_n_accounts",
+      "license_is_shared",
+      "account_status",
+      "country",
+      "last_synced_ts"
+    ]
+  },
+  "dim_organization": {
+    "schema": "marts",
+    "rows": 5675,
+    "columns": [
+      "org_key",
+      "is_internal_test",
+      "state",
+      "has_dot",
+      "dot_key",
+      "is_reseller",
+      "crm_active",
+      "in_crm",
+      "in_app",
+      "in_contracts",
+      "app_fleet_vehicles",
+      "crm_vehicle_limit",
+      "sales_rep_key",
+      "subscription_rows",
+      "vehicles_ever",
+      "active_subscriptions",
+      "subscriptions_on_billing_hold",
+      "active_current_generation",
+      "first_contract_date",
+      "last_coverage_end_date",
+      "lifecycle_status",
+      "tenure_days"
+    ]
+  },
+  "dim_vehicle": {
+    "schema": "marts",
+    "rows": 3492,
+    "columns": [
+      "vin_key",
+      "is_placeholder_vin",
+      "org_key",
+      "is_internal_test",
+      "device_key",
+      "driver_assigned",
+      "make",
+      "model",
+      "model_year",
+      "fuel_type",
+      "state",
+      "country",
+      "terminal_timezone",
+      "vehicle_status",
+      "registrations",
+      "last_synced_ts"
+    ]
+  },
+  "fct_contract_term": {
+    "schema": "marts",
+    "rows": 13753,
+    "columns": [
+      "contract_row_id",
+      "org_key",
+      "dot_key",
+      "vin_key",
+      "device_key",
+      "prev_device_key",
+      "make",
+      "model_year",
+      "status",
+      "sales_rep_key",
+      "export_date",
+      "contract_date",
+      "term_start_date",
+      "term_end_date",
+      "return_date",
+      "vehicle_limit",
+      "eld_type",
+      "flag_far_future_expiration",
+      "flag_return_before_activation",
+      "flag_negative_vehicle_limit",
+      "flag_activation_after_snapshot",
+      "flag_active_past_expiration",
+      "flag_missing_dates",
+      "flag_term_end_before_start",
+      "term_gap_days",
+      "renewals_so_far",
+      "is_current_generation",
+      "is_replacement",
+      "slot_start_date",
+      "slot_start_source",
+      "is_early_return",
+      "gap_is_whole_years",
+      "coverage_end_date",
+      "is_active_now",
+      "is_billing_hold",
+      "hw_generation",
+      "batch_label"
+    ]
+  },
+  "fct_device_anomaly_window": {
+    "schema": "marts",
+    "rows": 215,
+    "columns": [
+      "device_key",
+      "is_internal_test",
+      "batch_label",
+      "hw_generation",
+      "days_present",
+      "moving_reports_3day",
+      "moving_silent_reports_3day",
+      "moving_silent_share_3day",
+      "severity_class",
+      "priority_tier",
+      "observed_day4",
+      "moving_silent_reports_day4",
+      "recurred_day4",
+      "is_severe_day4"
+    ]
+  },
+  "fct_device_day": {
+    "schema": "marts",
+    "rows": 2254,
+    "columns": [
+      "device_key",
+      "report_date",
+      "source_table",
+      "is_internal_test",
+      "batch_label",
+      "hw_generation",
+      "moving_reports",
+      "flagged_reports",
+      "moving_silent_reports",
+      "speed_missing_reports",
+      "vin_missing_reports",
+      "moving_silent_share",
+      "is_severe_day"
+    ]
+  },
+  "rpt_device_priority_tiers": {
+    "schema": "marts",
+    "rows": 4,
+    "columns": [
+      "priority_tier",
+      "rule",
+      "devices",
+      "observed_day4",
+      "severe_day4",
+      "severe_day4_share",
+      "silent_reports_day4",
+      "share_of_day4_silent_reports"
+    ]
+  },
+  "rpt_fleet_snapshot": {
+    "schema": "marts",
+    "rows": 12,
+    "columns": [
+      "snapshot_date",
+      "metric",
+      "value",
+      "denominator",
+      "share",
+      "definition"
+    ]
+  },
+  "rpt_online_rate_by_generation": {
+    "schema": "marts",
+    "rows": 3,
+    "columns": [
+      "hw_generation",
+      "reporting_units",
+      "online_units",
+      "online_rate",
+      "low_battery_units",
+      "low_battery_share"
+    ]
+  },
+  "rpt_organizations_purged_after_2024": {
+    "schema": "marts",
+    "rows": 1,
+    "columns": [
+      "organizations_active_2024",
+      "organizations_purged",
+      "purged_share"
+    ]
+  },
+  "rpt_subscription_slot_changes": {
+    "schema": "marts",
+    "rows": 8,
+    "columns": [
+      "outcome",
+      "slots",
+      "share_of_slots",
+      "organizations"
+    ]
+  },
+  "snap_subscription_slot": {
+    "schema": "snapshots",
+    "rows": 19010,
+    "columns": [
+      "slot_key",
+      "org_key",
+      "vin_key",
+      "device_key",
+      "prev_device_key",
+      "make",
+      "model_year",
+      "contract_date",
+      "term_start_date",
+      "term_end_date",
+      "status",
+      "export_date",
+      "dbt_scd_id",
+      "dbt_updated_at",
+      "dbt_valid_from",
+      "dbt_valid_to",
+      "dbt_is_deleted"
+    ]
+  }
+}
