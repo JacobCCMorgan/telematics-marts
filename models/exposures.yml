@@ -1,0 +1,44 @@
+version: 2
+
+exposures:
+  - name: eld_ecm_disconnect
+    label: eld-ecm-disconnect
+    type: analysis
+    maturity: high
+    url: https://github.com/JacobCCMorgan/eld-ecm-disconnect
+    description: >
+      Persistent versus transient ECM disconnects, day-4 recurrence, whether ranking needs a model, and
+      the tiered field-visit list. Reads the device-day and anomaly-window facts and the device dimension.
+    depends_on:
+      - ref('fct_device_day')
+      - ref('fct_device_anomaly_window')
+      - ref('dim_device')
+    owner:
+      name: Jacob Chiang
+  - name: eld_subscription_lifecycle
+    label: eld-subscription-lifecycle
+    type: analysis
+    maturity: high
+    url: https://github.com/JacobCCMorgan/eld-subscription-lifecycle
+    description: >
+      Customer lifecycles, renewal hazard, 60-day risk list and the migration call campaign. Reads the
+      cleaned contract-term fact, the organisation dimension and the subscription-slot snapshot.
+    depends_on:
+      - ref('fct_contract_term')
+      - ref('dim_organization')
+      - ref('snap_subscription_slot')
+    owner:
+      name: Jacob Chiang
+  - name: fleet_data_lab_findings
+    label: fleet-data-lab findings
+    type: dashboard
+    maturity: medium
+    url: https://github.com/JacobCCMorgan/fleet-data-lab
+    description: The headline numbers quoted on the portfolio index page come from the reporting marts.
+    depends_on:
+      - ref('rpt_fleet_snapshot')
+      - ref('rpt_online_rate_by_generation')
+      - ref('rpt_device_priority_tiers')
+      - ref('rpt_subscription_slot_changes')
+    owner:
+      name: Jacob Chiang
