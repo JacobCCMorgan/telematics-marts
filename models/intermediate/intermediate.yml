@@ -16,6 +16,8 @@ models:
         description: round((term_start_date - contract_date) / 365); null when the term starts more than two weeks before the contract date.
       - name: coverage_end_date
         description: The term end, or the earlier return date for a deleted row whose device went back mid-term.
+      - name: flag_term_end_before_start
+        description: The CRM holds 34 rows whose expiration precedes the current term start; kept as data and flagged, not corrected.
       - name: slot_start_source
         tests:
           - accepted_values:

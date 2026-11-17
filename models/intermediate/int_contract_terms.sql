@@ -23,7 +23,8 @@ flagged as (
         vehicle_limit < 0                                                               as flag_negative_vehicle_limit,
         term_start_date > export_date                                                   as flag_activation_after_snapshot,
         status = 'active' and term_end_date < export_date                               as flag_active_past_expiration,
-        contract_date is null and term_start_date is null                               as flag_missing_dates
+        contract_date is null and term_start_date is null                               as flag_missing_dates,
+        term_end_date < term_start_date                                                 as flag_term_end_before_start
     from customer_rows
 ),
 
@@ -52,7 +53,8 @@ cleaned as (
         flag_negative_vehicle_limit,
         flag_activation_after_snapshot,
         flag_active_past_expiration,
-        flag_missing_dates
+        flag_missing_dates,
+        flag_term_end_before_start
     from flagged
 ),
 
