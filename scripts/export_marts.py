@@ -39,7 +39,38 @@ def export() -> dict:
     return manifest
 
 
+def check() -> None:
+    """Export to a temporary directory and compare with the committed tables by content (Parquet bytes can
+    differ between writer versions, the data must not)."""
+    import sys
+    import tempfile
+
+    global OUT
+    committed = OUT
+    with tempfile.TemporaryDirectory() as tmp:
+        OUT = Path(tmp)
+        fresh = export()
+        OUT = committed
+        manifest = json.loads((committed / "manifest.json").read_text())
+        problems = []
+        if fresh != manifest:
+            problems.append("manifest.json differs")
+        for name in manifest:
+            a = pd.read_parquet(committed / f"{name}.parquet")
+            b = pd.read_parquet(Path(tmp) / f"{name}.parquet")
+            if not a.equals(b):
+                problems.append(f"{name}.parquet differs")
+        if problems:
+            print("\n".join(problems))
+            sys.exit(1)
+        print(f"{len(manifest)} exported tables match the warehouse")
+
+
 if __name__ == "__main__":
-    m = export()
-    for name, meta in m.items():
-        print(f"{meta['schema']}.{name}: {meta['rows']:,} rows, {len(meta['columns'])} columns")
+    import sys
+
+    if "--check" in sys.argv:
+        check()
+    else:
+        for name, meta in export().items():
+            print(f"{meta['schema']}.{name}: {meta['rows']:,} rows, {len(meta['columns'])} columns")
