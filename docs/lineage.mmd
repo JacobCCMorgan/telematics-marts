@@ -1,0 +1,103 @@
+flowchart TB
+  subgraph sources["Sources (Parquet in data/input)"]
+    n28["dim_device"]
+    n29["dim_sim"]
+    n30["dim_vehicle"]
+    n31["dim_driver_account"]
+    n32["dim_org"]
+    n33["fact_contract"]
+    n34["fact_anomaly_device_3day"]
+    n35["fact_field_anomaly"]
+    n36["contracts_snapshot_2024_01_05"]
+  end
+  subgraph staging["Staging views"]
+    n18["stg_foundation__sims"]
+    n19["stg_foundation__devices"]
+    n20["stg_foundation__vehicles"]
+    n21["stg_foundation__anomaly_reports"]
+    n22["stg_foundation__contracts_2024"]
+    n23["stg_foundation__organizations"]
+    n24["stg_foundation__driver_accounts"]
+    n25["stg_foundation__contracts"]
+    n26["stg_foundation__anomaly_device_3day"]
+  end
+  subgraph intermediate["Intermediate views"]
+    n0["int_contract_terms"]
+    n1["int_device_day_anomaly"]
+    n2["int_vehicle_current_registration"]
+    n3["int_device_current_vehicle"]
+    n4["int_device_current_contract"]
+    n5["int_subscription_slot_export"]
+  end
+  subgraph marts["Marts (tables)"]
+    n6["rpt_fleet_snapshot"]
+    n7["rpt_organizations_purged_after_2024"]
+    n8["rpt_subscription_slot_changes"]
+    n9["rpt_online_rate_by_generation"]
+    n10["rpt_device_priority_tiers"]
+    n11["fct_device_anomaly_window"]
+    n12["dim_device"]
+    n13["fct_contract_term"]
+    n14["dim_vehicle"]
+    n15["dim_organization"]
+    n16["fct_device_day"]
+    n17["dim_driver_account"]
+  end
+  subgraph snapshots["Snapshot"]
+    n27["snap_subscription_slot"]
+  end
+  subgraph exposures["Downstream projects"]
+    n37["eld-ecm-disconnect"]
+    n38["eld-subscription-lifecycle"]
+    n39["fleet-data-lab findings"]
+  end
+  n25 --> n0
+  n26 --> n1
+  n21 --> n1
+  n20 --> n2
+  n20 --> n3
+  n0 --> n4
+  n0 --> n5
+  n12 --> n6
+  n13 --> n6
+  n15 --> n6
+  n22 --> n7
+  n0 --> n7
+  n27 --> n8
+  n12 --> n9
+  n11 --> n10
+  n26 --> n11
+  n16 --> n11
+  n19 --> n11
+  n19 --> n12
+  n18 --> n12
+  n3 --> n12
+  n4 --> n12
+  n0 --> n13
+  n19 --> n13
+  n2 --> n14
+  n23 --> n15
+  n0 --> n15
+  n1 --> n16
+  n19 --> n16
+  n24 --> n17
+  n29 --> n18
+  n28 --> n19
+  n30 --> n20
+  n35 --> n21
+  n36 --> n22
+  n32 --> n23
+  n31 --> n24
+  n33 --> n25
+  n34 --> n26
+  n5 --> n27
+  n16 --> n37
+  n11 --> n37
+  n12 --> n37
+  n13 --> n38
+  n15 --> n38
+  n27 --> n38
+  n6 --> n39
+  n9 --> n39
+  n10 --> n39
+  n8 --> n39
