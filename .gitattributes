@@ -1,0 +1,2 @@
+# The models are SQL. GitHub leaves SQL out of a repository's language statistics unless it is marked detectable.
+*.sql linguist-detectable=true
